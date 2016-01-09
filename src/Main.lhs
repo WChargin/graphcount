@@ -7,6 +7,10 @@
 
 \begin{document}
 
+%include src/CAS.lhs
+
+\section{The main file}
+
 First off, we'll need to pull in the @PermutationGroup@ module.
 This provides functions for, e.g.,
 converting permutations to cycle decompositions and vice versa,
