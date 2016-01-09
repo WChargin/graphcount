@@ -293,9 +293,18 @@ so that we can add it to our error message.
 \begin{haskellnote}[The |$| function]
 This is a built-in function that we use to eliminate parentheses.
 Function application is left-associative,
-so |foo bar baz quux| means |((foo bar) baz) quux|.
+so |foo bar baz quux == ((foo bar) baz) quux|.
+This is necessary because all functions are \emph{curried}:
+a ``two-argument'' function is really a function that returns another function.
+For example, |take 3 [1..10] == [1, 2, 3]|.
+But this decomposes to |(take 3) [1..10]|,
+so |take 3| is actually a function
+that can take the first three elements of any list.
+So |take| must have type |Int -> ([a] -> [a])|,
+which is what we mean when we write |take :: Int -> [a] -> [a]|.
+
 But if we want to write, say, |length (filter null (map myFunc list))|,
-then the function application should be right-associative
+then the function application isn't purely left-associative
 (as indicated by the parentheses).
 
 The |$| function is simply defined as |f $ x = f x|,
@@ -305,12 +314,6 @@ So you can write
 length $ filter null $ map myFunc list
 \end{spec}
 to mean the same as the original expression.
-
-You could also write
-\begin{spec}
-(length . filter null . map myFunc) list
-\end{spec}
-if you prefer.
 \end{haskellnote}
 
 All the remaining variants are interesting
