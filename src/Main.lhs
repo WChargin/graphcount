@@ -40,8 +40,8 @@ cycleOrders (fromCycles [[2, 3, 1], [4, 5]]) 7 == [3, 2, 1, 1]
 \section{The CAS}
 %include src/CAS.lhs
 
+\end{document}
+
 \begin{code}
 main = print 123
 \end{code}
-
-\end{document}
