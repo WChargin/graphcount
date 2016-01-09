@@ -37,6 +37,9 @@ So, for example, the following should hold
 cycleOrders (fromCycles [[2, 3, 1], [4, 5]]) 7 == [3, 2, 1, 1]
 \end{spec}
 
+\section{The CAS}
+%include src/CAS.lhs
+
 \begin{code}
 main = print 123
 \end{code}
