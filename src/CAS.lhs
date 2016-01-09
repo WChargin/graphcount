@@ -2,8 +2,23 @@
 \section{The CAS}
 
 We'll start with a digression: we need to develop a mini-CAS.
-Really, all we need is some basic symbolic expression handling,
-which is not too difficult to write.
+All we need to support is the following:
+\begin{itemize}
+  \item
+    we must be able to refer to symbolic variables;
+  \item
+    we must be able to combine variables, constants, and operators
+    to form expressions; and
+  \item
+    given scalar values for all the variables,
+    we must be able to provide a value for the entire expression
+    (i.e., evaluate it).
+\end{itemize}
+We will see that this task is quite easy for Haskell.
+
+First, the following |module| declaration
+indicates that we're creating a new Haskell module called |CAS|.
+This is how we'll use our CAS in our other modules.
 \begin{code}
 module CAS where
 \end{code}
@@ -20,15 +35,25 @@ For our purposes, it'll be sufficient to have plain variables (e.g., $x$)
 and symbols with subscripts (e.g., $x_3$).
 So we're defining a data type with two variants:
 \begin{code}
-data Symbol = Var Char
-            | Symbol `Sub` Int
-            deriving (Eq, Show)
+data Symbol     =   Var Char
+                |   Symbol `Sub` Int
+                    deriving (Eq, Show)
 \end{code}
 For example, we might use a variable |Var 'x'|,
 or its subscript form |Var 'x' `Sub` 3|.
 Note that, because the |Sub| constructor accepts any symbol,
 we can take subscripts of subscripts:
 e.g., |Var 'x' `Sub` 3 `Sub` 6| is valid.
+
+\begin{haskellnote}[Infix data constructors]
+Note that the second variant is defining a data constructor named |Sub|,
+which takes two arguments: a |Symbol| and an |Int|.
+We could have also written |Sub Symbol Int| for this variant.
+However, we choose to write it in infix notation
+because that's how it will most frequently be used:
+you could, of course, write |Sub (Var 'x') 3|,
+but |Var 'x' `Sub` 3| is more faithful to the pronunciation.
+\end{haskellnote}
 
 The first |deriving| declaration is important:
 it says that we have a total equivalence relation on |Symbol|,
@@ -44,44 +69,55 @@ For generality's sake, we'll let these be over an arbitrary set of scalars;
 thus, instead of just describing an |Expression|,
 we'll describe, say, an |Expression Int|.
 
-As before, we'll start by creating a type with a few variants:
-\begin{code}
-data Expression a =
-\end{code}
-(note that $a$ is the type of scalars).
+\begin{haskellnote}[Parametric data types]
+Parametric data types are extremely powerful.
+If we want to define a data structure to represent, say, a list of things,
+we could define separate structures for |IntList| and |StringList|, etc.,
+but this is obviously silly.
 
-Now, one variant that we certainly want to add is a constant term,
-because any scalar can act as an expression.
-So we add the following variant:
+Instead, we can define one data structure |List a|,
+where |a| can be any other type.
+So now we can have a |List Int| or a |List String|---%
+or a |List (List Int)|!
+\end{haskellnote}
+
+As before, we'll start by creating a type with a few variants.
+I'll write the full definition and then explain each variant in turn:
 \begin{code}
-                    Constant a
+data Expression a   =    Constant a
+                    |    Literal Symbol
+                    |    MonOp (a -> a) (Expression a)
+                    |    BinOp (a -> a -> a) (Expression a) (Expression a)
+                    |    NOp ([a] -> a) [Expression a]
 \end{code}
+
+The first variant is reasonably clear:
+a constant term requires a scalar value of type |a|.
+So if our scalars are the integers, we can write |Constant 10|;
+if our scalars were, say, strings, we could write |Constant "hello"|.
+(You can verify that |Constant 10 :: Expression Int|
+and |Constant "hello" :: Expression String|
+by typing them into GHCi.)
 
 Another important core term type is a symbol as an expression;
 e.g., the first term in the expression $x + 3$.
-So we add this variant:
-\begin{code}
-                  | Literal Symbol
-\end{code}
+This is what the second variant expresses.
+So we could write |Literal (Var 'x')| or |Literal (Var 'x' `Sub` 3)|.
 
-We could go ahead and add variants specifically for sums, products, etc.
+Next, we could go ahead and add variants specifically for sums, products, etc.
 But we're going to need a bunch of them,
 so we might as well define them for arbitrary
-unary, binary, and $n$-ary operations:
-\begin{code}
-                  | MonOp (a -> a) (Expression a)
-                  | BinOp (a -> a -> a) (Expression a) (Expression a)
-                  | NOp ([a] -> a) [Expression a]
-\end{code}
+unary, binary, and $n$-ary operations.
 
 These three variants work as follows.
 The |MonOp| variant requires two parameters:
-a function of type $a \to a$ (where $a$ is the set of scalars),
+a function of type $a \to a$
+(remember, $a$ is the set of scalars, so this might be, e.g., |Int -> Int|),
 and an expression to which to apply that function.
 So, we might write something like this:
 \begin{spec}
 double :: Int -> Int
-double x = 2 * x
+double x = 2 * x        -- or |double = (2 *)|
 
 baseExpr :: Expression Int
 baseExpr = Literal (Var 'x')
@@ -89,6 +125,9 @@ baseExpr = Literal (Var 'x')
 doubledExpr :: Expression Int
 doubledExpr = MonOp double baseExpr
 \end{spec}
+
+In a sense, this lets us ``pull up'' a normal scalar function
+into a function that acts on an expression.
 
 Similarly, |BinOp| takes a binary function and two expressions.
 So we could easily write |sumExpr = BinOp (+) exprA exprB|.
@@ -132,6 +171,8 @@ Of course, we expect the user to define all the variables we need,
 so if we ever actually come across a |Nothing| while evaluating,
 we should complain loudly.
 
+\subsubsection*{Creating simple environments more easily}
+
 We can also create a helper function
 to convert a list of bindings to an environment function.
 That is, we'd like to be able to write
@@ -143,20 +184,25 @@ and have it behave the same as |myEnvironment|.
 We can take advantage of the built-in |lookup| function,
 which works as follows:
 \begin{spec}
-lookup 10 [(10, "dog"), (30, "cat")] === Just "dog"
-lookup 20 [(10, "dog"), (30, "cat")] === Nothing
+lookup 10 [(10, "dog"), (30, "cat")] == Just "dog"
+lookup 20 [(10, "dog"), (30, "cat")] == Nothing
 \end{spec}
 So our definition might be
 \begin{spec}
-environmentFromList' :: [(Symbol, a)] -> Environment a
-environmentFromList' table = \symbol -> lookup symbol table
+environmentFromList :: [(Symbol, a)] -> Environment a
+environmentFromList table = \symbol -> lookup symbol table
 \end{spec}
 But this is an unnecessary use of a lambda function;
 remember that |Environment a == Symbol -> Maybe a|,
 so we can actually write
 \begin{spec}
-environmentFromList'' :: [(Symbol, a)] -> Environment a
-environmentFromList'' table symbol = lookup symbol table
+environmentFromList :: [(Symbol, a)] -> Symbol -> Maybe a
+environmentFromList table symbol = lookup symbol table
+\end{spec}
+or
+\begin{spec}
+environmentFromList :: [(Symbol, a)] -> Environment a
+environmentFromList table symbol = lookup symbol table
 \end{spec}
 There's one more simplification we can make.
 We can now see that this function literally is |lookup|
@@ -169,6 +215,17 @@ lets us write the final version:
 environmentFromList :: [(Symbol, a)] -> Environment a
 environmentFromList = flip lookup
 \end{code}
+
+\begin{haskellnote}[Point-free style]
+Note that we defined |environmentFromList|
+without actually referring to its parameters;
+instead, we applied a higher-order function (|flip|)
+to an existing function (|lookup|).
+This is called \emph{point-free style};
+the terminology arises from thinking of types as topological spaces
+and values are points in those spaces,
+so we're not referring to the ``points'' in the definition.
+\end{haskellnote}
 
 \subsection*{Evaluation}
 
@@ -194,6 +251,15 @@ valueSuccess :: Either String Int
 valueSuccess = Right 71
 \end{spec}
 (You can remember which is which because |Right| is the right answer!)
+
+\begin{haskellnote}[Defining |Either|]
+The (built-in) definition of |Either| is simply:
+\begin{spec}
+data Either a b     =   Left a
+                    |   Right b
+\end{spec}
+\vspace{-2em}
+\end{haskellnote}
 
 Now we can implement the evaluator in a piecewise manner.
 First, we address constant terms.
@@ -223,6 +289,29 @@ so we return an error indicating which variable was missing.
 Here, we use the |show| function,
 which converts any |Show|able value into a string
 so that we can add it to our error message.
+
+\begin{haskellnote}[The |$| function]
+This is a built-in function that we use to eliminate parentheses.
+Function application is left-associative,
+so |foo bar baz quux| means |((foo bar) baz) quux|.
+But if we want to write, say, |length (filter null (map myFunc list))|,
+then the function application should be right-associative
+(as indicated by the parentheses).
+
+The |$| function is simply defined as |f $ x = f x|,
+but it has very low precedence and is defined to be right-associative.
+So you can write
+\begin{spec}
+length $ filter null $ map myFunc list
+\end{spec}
+to mean the same as the original expression.
+
+You could also write
+\begin{spec}
+(length . filter null . map myFunc) list
+\end{spec}
+if you prefer.
+\end{haskellnote}
 
 All the remaining variants are interesting
 because they involve sub-expressions.
