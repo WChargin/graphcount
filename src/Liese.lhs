@@ -1,3 +1,4 @@
+\clearpage
 \section{Dr.~Liese's code}
 
 Dr.~Liese provided some Mathematica code.

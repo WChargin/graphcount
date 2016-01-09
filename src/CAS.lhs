@@ -1,3 +1,4 @@
+\clearpage
 \section{The CAS}
 
 We'll start with a digression: we need to develop a mini-CAS.

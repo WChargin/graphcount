@@ -1,3 +1,4 @@
+\clearpage
 \section{The main program}
 
 \begin{code}
