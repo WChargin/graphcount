@@ -1,16 +1,3 @@
-\documentclass{article}
-
-%include polycode.fmt
-%format phi = "\varphi"
-
-\usepackage{amsmath}
-
-\begin{document}
-
-%include src/CAS.lhs
-
-%include src/Liese.lhs
-
 \section{The main program}
 
 \begin{code}
@@ -53,5 +40,3 @@ main = do
     let env = const (Just 1)
     print $ eval env zgExpression       -- Right 1044
 \end{code}
-
-\end{document}
