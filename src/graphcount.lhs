@@ -9,6 +9,31 @@
 
 \usepackage{amsmath}
 \usepackage{zi4}
+\usepackage{xcolor}
+\definecolor{haskellpurple}{HTML}{5c4e84}
+\usepackage{mdframed}
+\newmdenv[
+  skipabove=7pt,
+  skipbelow=7pt,
+  rightline=false,
+  leftline=true,
+  topline=false,
+  bottomline=false,
+  backgroundcolor=haskellpurple!10,
+  linecolor=haskellpurple,
+  innerleftmargin=5pt,
+  innerrightmargin=5pt,
+  innertopmargin=5pt,
+  innerbottommargin=5pt,
+  leftmargin=0cm,
+  rightmargin=0cm,
+  linewidth=4pt,
+]{haskellbox}
+\newenvironment{haskellnote}[1][]{
+  \begin{haskellbox}\sffamily\textbf{#1}\\
+}{
+  \end{haskellbox}
+}
 
 \begin{document}
 
@@ -61,6 +86,20 @@ The only really confusing one of these is the last,
 where the lack of space between the trailing @`@ and the @3@
 can make these expressions difficult to read.
 Sorry about that!
+
+\subsection*{A quick note on notes}
+
+From time to time, you may come across notes like these:
+
+\begin{haskellnote}[The |data| and |type| keywords]
+These two keywords are different.
+Note that |data| creates a \emph{new} data type
+with one or more type constructors.
+On the other hand, |type| merely creates a type alias
+so that we can refer to existing types with a shorter name.
+\end{haskellnote}
+
+These are notes about the Haskell language itself.
 
 %include src/CAS.lhs
 %include src/Liese.lhs
