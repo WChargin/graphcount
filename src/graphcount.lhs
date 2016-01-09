@@ -94,7 +94,7 @@ From time to time, you may come across notes like these:
 \begin{haskellnote}[The |data| and |type| keywords]
 These two keywords are different.
 Note that |data| creates a \emph{new} data type
-with one or more type constructors.
+with one or more data constructors.
 On the other hand, |type| merely creates a type alias
 so that we can refer to existing types with a shorter name.
 \end{haskellnote}
