@@ -119,9 +119,9 @@ For example, if we only know the values for |Var 'x'| and |Var 'y'|,
 then we could write an environment as follows:
 \begin{spec}
 myEnvironment :: Environment Int
-myEnvironment (Var 'x') = Just 12
-myEnvironment (Var 'y') = Just 33
-myEnvironment _         = Nothing
+myEnvironment (Var 'x')     = Just 12
+myEnvironment (Var 'y')     = Just 33
+myEnvironment _             = Nothing
 \end{spec}
 This indicates a piecewise-defined function
 where we've specified values for |Var 'x'| and |Var 'y'|
@@ -285,9 +285,9 @@ is a function that will evaluate any expression with a fixed environment.
 Then we call |mapM|.
 Here, |mapM| has type
 \begin{spec}
-mapM :: (Expression a -> Either String a)
-     -> [Expression a]
-     -> Either String [a]
+mapM  ::  (Expression a -> Either String a)
+      ->  [Expression a]
+      ->  Either String [a]
 \end{spec}
 so it can either have a single error message or a list of results.
 The call to |mapM| will apply this function to each of the |as|;

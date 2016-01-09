@@ -32,10 +32,10 @@ finds the length of each of the disjoint cycles.
 cycleOrders :: Ord a => Permutation a -> Int -> [Int]
 cycleOrders grp n = nontrivials ++ trivials
   where
-    cycles = toCycles grp
-    numTrivials = n - length (concat cycles)
-    trivials = replicate numTrivials 1
-    nontrivials = map length cycles
+    cycles          = toCycles grp
+    numTrivials     = n - length (concat cycles)
+    trivials        = replicate numTrivials 1
+    nontrivials     = map length cycles
 \end{code}
 
 Note that |toCycles| is a built-in function from that library we imported,
@@ -78,7 +78,7 @@ powerSym lambda k = NOp product [getP li k | li <- lambda]
 \begin{code}
 getZG grp n k = MonOp (`div` length elements) $ NOp sum terms
   where
-    elements = elts grp
-    terms = map term elements
-    term element = powerSym (cycleOrders element n) k
+    elements        = elts grp
+    terms           = map term elements
+    term element    = powerSym (cycleOrders element n) k
 \end{code}
