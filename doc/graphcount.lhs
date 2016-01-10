@@ -81,7 +81,10 @@ We'll see how this goes\ldots
 \subsection*{A quick note on notation}
 
 This document is written in Literate Haskell;
-the source for the document is also the Haskell source!
+the \LaTeX{} source for the document is also the Haskell source!
+(The Haskell compiler knows to ignore
+anything outside a @\begin{code} \end{code}@ environment
+if it detects \LaTeX{} input.)
 
 Usually, Literate Haskell does quite a good job with the formatting.
 However, it does rather poorly with infix operator sections.
