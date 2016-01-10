@@ -367,15 +367,7 @@ There's a lot more to say about data types, but we won't.
 \subsection{More}
 
 There's a lot more to say about Haskell, but we won't.
-Hopefully, the syntax will be readable enough---%
-e.g., you can figure out what this means:
-\begin{spec}
-getMultiplesOfThree :: [Int] -> [Int]
-getMultiplesOfThree xs = filter isMultipleOfThree xs
-  where
-    isMultipleOfThree n = (n `mod` 3) == 0
-\end{spec}
-
+Hopefully, the syntax will be readable enough.
 From time to time, when we do want to explain something,
 you may come across notes like these:
 \begin{haskellnote}[Notes]
