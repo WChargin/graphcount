@@ -3,6 +3,9 @@
 
 This document doesn't assume any knowledge of Haskell.
 Let's introduce some basic concepts.
+\begin{note}
+You're welcome to skip this whole section, if you want.
+\end{note}
 
 \subsection{Functions}
 

@@ -41,6 +41,24 @@
   \end{haskellbox}
 }
 
+\newmdenv[
+  skipabove=7pt,
+  skipbelow=7pt,
+  rightline=false,
+  leftline=true,
+  topline=false,
+  bottomline=false,
+  backgroundcolor=blue!15,
+  linecolor=blue,
+  innerleftmargin=5pt,
+  innerrightmargin=5pt,
+  innertopmargin=5pt,
+  innerbottommargin=5pt,
+  leftmargin=0cm,
+  rightmargin=0cm,
+  linewidth=4pt,
+]{note}
+
 \begin{document}
 
 \maketitle
