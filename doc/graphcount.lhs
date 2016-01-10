@@ -1,7 +1,13 @@
 \documentclass{article}
 
 %include polycode.fmt
-%format phi = "\varphi"
+%format alpha   = "\alpha"
+%format beta    = "\beta"
+%format gamma   = "\gamma"
+%format phi     = "\phi"
+%format psi     = "\psi"
+
+\long\def\ignore#1{}
 
 \title{Exploring graphs in Haskell}
 \author{William Chargin}
@@ -19,7 +25,7 @@
   leftline=true,
   topline=false,
   bottomline=false,
-  backgroundcolor=haskellpurple!10,
+  backgroundcolor=haskellpurple!15,
   linecolor=haskellpurple,
   innerleftmargin=5pt,
   innerrightmargin=5pt,
@@ -87,20 +93,7 @@ where the lack of space between the trailing @`@ and the @3@
 can make these expressions difficult to read.
 Sorry about that!
 
-\subsection*{A quick note on notes}
-
-From time to time, you may come across notes like these:
-
-\begin{haskellnote}[The |data| and |type| keywords]
-These two keywords are different.
-Note that |data| creates a \emph{new} data type
-with one or more data constructors.
-On the other hand, |type| merely creates a type alias
-so that we can refer to existing types with a shorter name.
-\end{haskellnote}
-
-These are notes about the Haskell language itself.
-
+%include doc/haskell.lhs
 %include src/CAS.lhs
 %include src/Liese.lhs
 %include src/Main.lhs

@@ -18,8 +18,15 @@ By importing this, we save ourselves from having to rewrite all that
 import Math.Algebra.Group.PermutationGroup
     (Permutation, toCycles, elts)
 \end{code}
-The parenthesized import list indicates that we only want those functions;
+\begin{haskellnote}[Import lists]
+The parenthesized import list indicates that
+we only want those types and functions;
 this makes it easy to tell what comes from where when reading the code.
+If you've imported ten modules from various sources
+and see a function you haven't heard of,
+it can be difficult to determine where it comes from
+if there aren't any import lists!
+\end{haskellnote}
 We're importing the |Permutation| type, and two functions.
 The |toCycles| function takes a |Permutation| to its cycle decomposition.
 The |elts| function is like Mathematica's @GroupElements@ function:
@@ -89,6 +96,11 @@ The format is made to resemble set-builder notation.
 
 \subsection{|powerSym|}
 
+We want to define
+\begin{equation*}
+|powerSym|(\lambda, k) = \prod_{\lambda_i \in \lambda} |getP|(\lambda_i, k),
+\end{equation*}
+so we do just that!
 \begin{code}
 powerSym :: [Int] -> Int -> Expression Int
 powerSym lambda k = NOp product [getP li k | li <- lambda]
@@ -96,6 +108,14 @@ powerSym lambda k = NOp product [getP li k | li <- lambda]
 
 \subsection{|getZG|}
 
+It looks like this one is
+\begin{equation*}
+|getZG|(G, n, k) =
+    \frac{1}{\lvert G \rvert}
+    \sum_{\sigma \in G} |powerSym|(|cycleOrders|(\sigma, n), k);
+\end{equation*}
+even though I'm not entirely sure what that represents,
+it's not too difficult to write.
 \begin{code}
 getZG grp n k = MonOp (`div` length elements) $ NOp sum terms
   where
@@ -103,3 +123,6 @@ getZG grp n k = MonOp (`div` length elements) $ NOp sum terms
     terms           = map term elements
     term element    = powerSym (cycleOrders element n) k
 \end{code}
+
+And that's it---we're done with these functions!
+Finally, we can write the main program to solve the original problem.

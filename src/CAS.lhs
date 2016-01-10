@@ -69,18 +69,6 @@ For generality's sake, we'll let these be over an arbitrary set of scalars;
 thus, instead of just describing an |Expression|,
 we'll describe, say, an |Expression Int|.
 
-\begin{haskellnote}[Parametric data types]
-Parametric data types are extremely powerful.
-If we want to define a data structure to represent, say, a list of things,
-we could define separate structures for |IntList| and |StringList|, etc.,
-but this is obviously silly.
-
-Instead, we can define one data structure |List a|,
-where |a| can be any other type.
-So now we can have a |List Int| or a |List String|---%
-or a |List (List Int)|!
-\end{haskellnote}
-
 As before, we'll start by creating a type with a few variants.
 I'll write the full definition and then explain each variant in turn:
 \begin{code}
@@ -95,9 +83,13 @@ The first variant is reasonably clear:
 a constant term requires a scalar value of type |a|.
 So if our scalars are the integers, we can write |Constant 10|;
 if our scalars were, say, strings, we could write |Constant "hello"|.
-(You can verify that |Constant 10 :: Expression Int|
+
+\begin{haskellnote}[Finding types]
+You can verify that |Constant 10 :: Expression Int|
 and |Constant "hello" :: Expression String|
-by typing them into GHCi.)
+by typing @:type Constant 10@ or @:type Constant "hello"@
+into GHCi, the interactive Haskell interpreter.
+\end{haskellnote}
 
 Another important core term type is a symbol as an expression;
 e.g., the first term in the expression $x + 3$.
@@ -354,8 +346,10 @@ otherwise, I'll return the first error.
 \end{quote}
 In other words, |liftM2| does \emph{exactly} what we want!
 
-(The real beauty of |liftM2| is that it's more general than this!
-In fact, it can work in any \emph{monad}; see later for a crash course.)
+\begin{haskellnote}[A taste of monads]
+The real beauty of |liftM2| is that it's more general than this!
+In fact, it can work in any \emph{monad}; see later for a crash course.
+\end{haskellnote}
 
 Similarly, of course, |liftM| works on unary functions:
 \begin{code}
