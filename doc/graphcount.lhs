@@ -4,6 +4,10 @@
 %format alpha   = "\alpha"
 %format beta    = "\beta"
 %format gamma   = "\gamma"
+%format alpha_1 = "\alpha_1"
+%format beta_1  = "\beta_1"
+%format alpha_2 = "\alpha_2"
+%format beta_2  = "\beta_2"
 %format phi     = "\phi"
 %format psi     = "\psi"
 
@@ -14,6 +18,14 @@
 \date{9~January 2016}
 
 \usepackage{amsmath}
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows}
+\tikzset{
+  commutative diagrams/.cd, 
+  arrow style=tikz, 
+  diagrams={>=stealth}
+}
+
 \usepackage{zi4}
 \usepackage{xcolor}
 \definecolor{haskellpurple}{HTML}{5c4e84}
@@ -48,8 +60,8 @@
   leftline=true,
   topline=false,
   bottomline=false,
-  backgroundcolor=blue!15,
-  linecolor=blue,
+  backgroundcolor=cyan!15,
+  linecolor=cyan,
   innerleftmargin=5pt,
   innerrightmargin=5pt,
   innertopmargin=5pt,
@@ -58,6 +70,27 @@
   rightmargin=0cm,
   linewidth=4pt,
 ]{note}
+
+\newmdenv[
+  skipabove=7pt,
+  skipbelow=7pt,
+  rightline=false,
+  leftline=true,
+  topline=false,
+  bottomline=false,
+  backgroundcolor=orange!15,
+  linecolor=orange,
+  innerleftmargin=5pt,
+  innerrightmargin=5pt,
+  innertopmargin=5pt,
+  innerbottommargin=5pt,
+  leftmargin=0cm,
+  rightmargin=0cm,
+  linewidth=4pt,
+]{exerciseBox}
+\newenvironment{exercise}%
+    {\begin{exerciseBox}\textbf{Exercise.}\quad\ignorespaces}%
+    {\end{exerciseBox}}
 
 \begin{document}
 
@@ -118,5 +151,6 @@ Sorry about that!
 %include src/CAS.lhs
 %include src/Liese.lhs
 %include src/Main.lhs
+%include doc/monads.lhs
 
 \end{document}
