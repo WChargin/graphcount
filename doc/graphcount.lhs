@@ -13,7 +13,7 @@
 
 \long\def\ignore#1{}
 
-\title{Exploring graphs in Haskell}
+\title{Some discrete math in Haskell}
 \author{William Chargin}
 \date{9~January 2016}
 
