@@ -130,6 +130,13 @@ getPermutationFromEdgeList perm edges =
 \end{code}
 Note that |concatMap = concat . map :: (a -> [b]) -> [a] -> [b]|.
 
+\begin{note}
+Stop and think about that type signature.
+It tells you a lot.
+Can you tell exactly what it will do just from the type?
+Can you implement it?
+\end{note}
+
 For the finale, we create our group and get the results!
 \begin{code}
 g = [getPermutationFromEdgeList perm sortedEdges | perm <- elts group]
