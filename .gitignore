@@ -1,5 +1,6 @@
 dist
-pdf
+pdf/*
+!pdf/graphcount.pdf
 cabal-dev
 *.o
 *.hi
