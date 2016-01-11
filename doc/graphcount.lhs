@@ -18,6 +18,10 @@
 \date{9~January 2016}
 
 \usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{microtype}
+
 \usepackage{tikz-cd}
 \usetikzlibrary{arrows}
 \tikzset{
