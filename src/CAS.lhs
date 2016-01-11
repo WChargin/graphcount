@@ -89,6 +89,7 @@ You can verify that |Constant 10 :: Expression Int|
 and |Constant "hello" :: Expression String|
 by typing @:type Constant 10@ or @:type Constant "hello"@
 into GHCi, the interactive Haskell interpreter.
+(Launch it with @ghci@.)
 \end{haskellnote}
 
 Another important core term type is a symbol as an expression;
