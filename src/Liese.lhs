@@ -34,6 +34,11 @@ The |elts| function is like Mathematica's @GroupElements@ function:
 its type is |[Permutation] -> [Permutation]|,
 and it finds the closure of a permutation group given its generators.
 
+We actually import the |elts| function from the @SchreierSims@ module,
+which uses the Schreier--Sims algorithm to
+efficiently find the elements of a permutation group.
+In practice, this has resulted in a speed increase of $110 \times$.
+
 Of course, we also want our own CAS.
 \begin{code}
 import CAS
