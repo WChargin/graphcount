@@ -16,7 +16,8 @@ By importing this, we save ourselves from having to rewrite all that
 (and of course this functionality is built into Mathematica).
 \begin{code}
 import Math.Algebra.Group.PermutationGroup
-    (Permutation, toCycles, elts)
+    (Permutation, toCycles)
+import Math.Algebra.Group.SchreierSims (elts)
 \end{code}
 \begin{haskellnote}[Import lists]
 The parenthesized import list indicates that

@@ -11,7 +11,8 @@ import Liese
 import CAS
 
 import Math.Algebra.Group.PermutationGroup
-    (_S, Permutation, (.^), fromList, elts)
+    (_S, Permutation, (.^), fromList)
+import Math.Algebra.Group.SchreierSims (elts)
 import Data.List (elemIndices)
 \end{code}
 Note that |_S| generates the symmetric group of a given order,
